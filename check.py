@@ -35,6 +35,9 @@ with socket.create_connection((hostname, port)) as sock:
 
         # Extract the expiration date from the certificate
         exp_date = datetime.datetime.strptime(cert["notAfter"], "%b %d %H:%M:%S %Y %Z")
+        issue_date = datetime.datetime.strptime(
+            cert["notBefore"], "%b %d %H:%M:%S %Y %Z"
+        )
 
         # Get the certificate issuer
         issuer_list = tuple_to_dict(cert["issuer"])
@@ -53,6 +56,7 @@ with socket.create_connection((hostname, port)) as sock:
         ciphers = ssock.cipher()
 
         # Print the certificate's expiration date, days until expiry, TLS version, ciphers used, and issuer
+        print("Certificate was issued on:", issue_date)
         print("Certificate expires on:", exp_date)
         print("Days until certificate expiry:", days_until_expiry)
         print("TLS version:", tls_version)
